@@ -10,22 +10,22 @@ public class TarefasRepository {
 	
 	//Criando lista de tarefas
 	static public List<Tarefa> tarefas = new ArrayList<Tarefa>();
-
-	//Construtor da classe
-	public TarefasRepository() {
-		//Criando tarefas de teste
-		Tarefa tarefa1 = new Tarefa("Estar Javascript", new Date(), true);
-		Tarefa tarefa2 = new Tarefa("Estar Angular", new Date(), false);
-		Tarefa tarefa3 = new Tarefa("Estar JAVA Spring", new Date(), false);
-		
-		//Adicionando as tarefas na lista
-		tarefas.add(tarefa1);
-		tarefas.add(tarefa2);
-		tarefas.add(tarefa3);
-	}
 	
+	//Adiciona tarefa na lista
 	static public void adicionarTarefa(Tarefa tarefa) {
 		tarefas.add(tarefa);
+	}
+	
+	static public void excluirTarefa(String descricao) {
+		Tarefa t = null;
+		for(Tarefa tarefa : tarefas) {
+			if(tarefa.descricao.equals(descricao)) {
+				t = tarefa;
+			}
+		}
+		if(t != null) {
+			tarefas.remove(t);	
+		}
 	}
 
 }

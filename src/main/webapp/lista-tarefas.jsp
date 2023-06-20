@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.tarefas.entity.Tarefa"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -14,14 +15,20 @@
 		<h4>Olá mundo JSP</h4>
 		
 		<div class="row">
-			<%			
+			<%	
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			
 				for(Tarefa tarefa : TarefasRepository.tarefas){
 			%>
-					<div class="card col m-1" style="min-width: 300px; max-width: 300px">
+					<div class="card col m-1 <% if(tarefa.urgente) out.write("bg-danger"); %>" style="min-width: 300px; max-width: 300px">
 						<div class="card-body">
 							<h5 class="card-title"><%= tarefa.descricao %></h5>
-							<p class="card-text"><%= tarefa.data %></p>
+							<p class="card-text"><%= dateFormat.format(tarefa.data) %></p>
 						</div>
+						<form action="processa-excluir-tarefa">
+							<input type="hidden" value="<%= tarefa.descricao %>" name="tarefa-excluir" />
+							<button class="btn mb-2">Excluir</button>
+						</form>
 					</div>
 			<%
 				}

@@ -2,6 +2,8 @@ package com.tarefas.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -19,20 +21,34 @@ public class ProcessaNovaTarefa extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		//Recebendo parametros da tela
 		String descricao = req.getParameter("descricao");
-		String data = req.getParameter("data");
+		String dataString = req.getParameter("data");
 		String urgente = req.getParameter("urgente");
 		
+		//Tratando checkbox
 		Boolean urgenteBool = false;
 		
-		if(urgente.equals("on")) {
+		if(urgente != null) {
 			urgenteBool = true;
 		}
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		
-		Tarefa tarefa = new Tarefa(descricao, new Date(), urgenteBool);
+		Date data = new Date();
+		try {
+			data = dateFormat.parse(dataString);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		
+		//Criando objeto tarefa, passando o que veio da tela
+		Tarefa tarefa = new Tarefa(descricao, data, urgenteBool);
+		
+		//Adicionando na lista
 		TarefasRepository.adicionarTarefa(tarefa);
 		
+		//Redireciona o usuário para lista de tarefas
 		resp.sendRedirect("lista-tarefas.jsp");
 		
 //		PrintWriter writer = resp.getWriter();
